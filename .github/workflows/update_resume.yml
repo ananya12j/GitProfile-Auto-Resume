@@ -23,7 +23,9 @@ jobs:
 
     - name: Run script to generate resume
       env:
-        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+
+      GITHUB_USERNAME: ${{ secrets.MY_GITHUB_USERNAME }}
+
       run: python scripts/generate_resume.py
 
     - name: Commit and push changes
