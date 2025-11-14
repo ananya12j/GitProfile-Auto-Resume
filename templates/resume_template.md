@@ -1,11 +1,11 @@
 # {{name}} — Automated GitHub Resume
 
-### 🌟 GitHub Summary (Auto-Generated Weekly)
+### 🌟 GitHub Summary (Auto-Generated)
 
-- **Total Public Repositories:** {{public_repos}}
+- **Public Repositories:** {{public_repos}}
 - **Followers:** {{followers}}
 - **Following:** {{following}}
-- **Total Stars Received:** {{stars}}
+- **Total Stars:** {{stars}}
 - **Top Languages:** {{languages}}
 
-_Last auto-updated on **{{updated_date}}**._
+_Last updated on **{{updated_date}}**._

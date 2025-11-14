@@ -2,8 +2,8 @@ name: Auto-Update Resume
 
 on:
   schedule:
-    - cron: "0 0 * * 1"   # Every Monday at midnight
-  workflow_dispatch:      # Manual trigger
+    - cron: "0 0 * * 1"  # Runs every Monday at midnight
+  workflow_dispatch:
 
 jobs:
   update-resume:
@@ -23,9 +23,7 @@ jobs:
 
     - name: Run script to generate resume
       env:
-
-      GITHUB_USERNAME: ${{ secrets.MY_GITHUB_USERNAME }}
-
+        GITHUB_USERNAME: ${{ secrets.RESUME_USER }}
       run: python scripts/generate_resume.py
 
     - name: Commit and push changes
@@ -35,3 +33,4 @@ jobs:
         git add Resume.md
         git commit -m "Auto-update Resume" || echo "No changes to commit"
         git push
+      continue-on-error: true
