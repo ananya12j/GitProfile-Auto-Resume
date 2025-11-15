@@ -1,130 +1,140 @@
-#!/usr/bin/env python3
 import os
 import requests
 import datetime
-import textwrap
+import base64
 
-# read the env var (set by the workflow)
 USERNAME = os.getenv("GITHUB_USERNAME")
 
-# Config
-GITHUB_API_BASE = "https://api.github.com"
-TEMPLATE_PATH = "templates/resume_template.md"
-OUTPUT_PATH = "Resume.md"
-PROJECTS_EXCLUDE = {".github", "templates", "scripts", ".git", "__pycache__"}
-PROJECT_SUMMARY_MAX_CHARS = 250  # limit for each summary
+API_BASE = "https://api.github.com"
 
-def safe_first_paragraph_from_text(text):
-    # split into paragraphs by blank lines
-    parts = [p.strip() for p in text.split("\n\n") if p.strip()]
-    if not parts:
-        return ""
-    # use first paragraph and collapse newlines
-    first = " ".join(parts[0].splitlines()).strip()
-    if len(first) > PROJECT_SUMMARY_MAX_CHARS:
-        return first[:PROJECT_SUMMARY_MAX_CHARS].rsplit(" ", 1)[0] + "..."
-    return first
 
-def read_local_readme_summary(folder_path):
-    # look for README.md (case-insensitive)
-    for name in ("README.md", "Readme.md", "readme.md"):
-        fp = os.path.join(folder_path, name)
-        if os.path.isfile(fp):
-            with open(fp, "r", encoding="utf-8") as f:
-                text = f.read()
-            return safe_first_paragraph_from_text(text)
-    # fallback: no README -> try to give a hint
-    try:
-        items = os.listdir(folder_path)
-        items = [i for i in items if not i.startswith(".")][:6]
-        if items:
-            return "Contains: " + ", ".join(items)
-    except Exception:
-        pass
-    return "No README available."
-
-def get_github_user_stats(username):
-    # minimal unauthenticated calls (rate-limited but fine for weekly use)
-    user_resp = requests.get(f"{GITHUB_API_BASE}/users/{username}")
-    user_resp.raise_for_status()
-    user = user_resp.json()
-
-    # get public repos (first page). If many repos exist, for stats it's usually enough.
-    repos_resp = requests.get(f"{GITHUB_API_BASE}/users/{username}/repos?per_page=100")
-    repos_resp.raise_for_status()
-    repos = repos_resp.json()
+def get_user_stats(username):
+    user = requests.get(f"{API_BASE}/users/{username}").json()
+    repos = requests.get(f"{API_BASE}/users/{username}/repos?per_page=100").json()
 
     total_stars = sum(repo.get("stargazers_count", 0) for repo in repos)
-    language_counts = {}
+
+    # get top languages
+    lang_count = {}
     for repo in repos:
         lang = repo.get("language")
         if lang:
-            language_counts[lang] = language_counts.get(lang, 0) + 1
-    top_languages = ", ".join(sorted(language_counts, key=language_counts.get, reverse=True)[:5])
+            lang_count[lang] = lang_count.get(lang, 0) + 1
 
-    # Optional: commits count across repos would require extra requests (omitted for speed)
+    top_langs = ", ".join(sorted(lang_count, key=lang_count.get, reverse=True)[:5])
+
     return {
-        "name": user.get("name") or username,
+        "name": user.get("name", username),
         "public_repos": user.get("public_repos", 0),
         "followers": user.get("followers", 0),
         "following": user.get("following", 0),
         "stars": total_stars,
-        "languages": top_languages if top_languages else "—",
+        "languages": top_langs if top_langs else "—",
         "updated_date": datetime.datetime.now().strftime("%d %b %Y")
     }
 
-def discover_projects_and_summaries():
-    root_items = sorted(os.listdir("."))
-    projects = []
-    for item in root_items:
-        if item in PROJECTS_EXCLUDE:
-            continue
-        if item.startswith("."):
-            continue
-        if os.path.isdir(item):
-            summary = read_local_readme_summary(item)
-            projects.append({
-                "name": item,
-                "path": item,
-                "summary": summary
-            })
-    return projects
 
-def render_projects_md(projects):
+def extract_readme_summary(username, repo_name):
+    """Fetch README from GitHub API and extract first paragraph."""
+    readme_url = f"{API_BASE}/repos/{username}/{repo_name}/readme"
+    r = requests.get(readme_url)
+
+    if r.status_code != 200:
+        return None  # no readme found
+
+    readme_json = r.json()
+    content = readme_json.get("content", "")
+    if not content:
+        return None
+
+    try:
+        decoded = base64.b64decode(content).decode("utf-8", errors="ignore")
+    except:
+        return None
+
+    # Extract first paragraph
+    paragraphs = [p.strip() for p in decoded.split("\n\n") if p.strip()]
+    if not paragraphs:
+        return None
+
+    summary = paragraphs[0].replace("\n", " ").strip()
+
+    if len(summary) > 300:
+        summary = summary[:300] + "..."
+
+    return summary
+
+
+def fetch_repositories(username):
+    """Get all repos with description and readme summary."""
+    url = f"{API_BASE}/users/{username}/repos?per_page=100&sort=updated"
+    repos = requests.get(url).json()
+
+    project_list = []
+
+    for repo in repos:
+        name = repo["name"]
+        stars = repo["stargazers_count"]
+        html_url = repo["html_url"]
+        description = repo.get("description") or ""
+
+        # get readme summary
+        readme_summary = extract_readme_summary(username, name)
+
+        summary = readme_summary or description or "No description available."
+
+        project_list.append({
+            "name": name,
+            "stars": stars,
+            "url": html_url,
+            "summary": summary
+        })
+
+    # Sort by stars (descending)
+    project_list = sorted(project_list, key=lambda x: x["stars"], reverse=True)
+
+    return project_list
+
+
+def generate_projects_md(projects):
+    """Turn project info into Markdown."""
     if not projects:
-        return "No project folders found in this repository."
-    lines = ["## 🧩 Projects\n"]
+        return "No public repositories found."
+
+    lines = ["## 🧩 Projects (Auto-Generated)\n"]
+
     for p in projects:
-        # show relative link to folder and short summary
-        lines.append(f"- **[{p['name']}](./{p['path']})** — {p['summary']}")
+        lines.append(
+            f"- **[{p['name']}]({p['url']})** ⭐{p['stars']} — {p['summary']}"
+        )
+
     return "\n".join(lines)
 
-def write_resume(template_data: dict, projects_md: str):
-    # read template
-    with open(TEMPLATE_PATH, "r", encoding="utf-8") as f:
+
+def generate_resume():
+    if not USERNAME:
+        raise Exception("GITHUB_USERNAME not set!")
+
+    print(f"Fetching GitHub stats for {USERNAME}...")
+
+    stats = get_user_stats(USERNAME)
+    projects = fetch_repositories(USERNAME)
+    projects_md = generate_projects_md(projects)
+
+    with open("templates/resume_template.md") as f:
         template = f.read()
 
-    # replace simple placeholders
-    for key, value in template_data.items():
-        template = template.replace(f"{{{{{key}}}}}", str(value))
+    # replace placeholders
+    for key, val in stats.items():
+        template = template.replace(f"{{{{{key}}}}}", str(val))
 
-    # insert projects block
     template = template.replace("{{projects}}", projects_md)
 
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+    with open("Resume.md", "w") as f:
         f.write(template)
 
-def main():
-    if not USERNAME:
-        raise Exception("GITHUB_USERNAME environment variable not set! Add secret RESUME_USER and map it in the workflow.")
-    print(f"Fetching GitHub stats for: {USERNAME}")
-
-    stats = get_github_user_stats(USERNAME)
-    projects = discover_projects_and_summaries()
-    projects_md = render_projects_md(projects)
-
-    write_resume(stats, projects_md)
     print("Resume.md updated successfully!")
 
+
 if __name__ == "__main__":
-    main()
+    generate_resume()

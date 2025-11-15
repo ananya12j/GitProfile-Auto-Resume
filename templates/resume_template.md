@@ -2,29 +2,23 @@
 
 ---
 
-### 📊 GitHub Summary (Auto-Generated)
+## 📊 GitHub Summary
 - **Public Repositories:** {{public_repos}}
 - **Followers:** {{followers}}
 - **Following:** {{following}}
 - **Total Stars:** {{stars}}
 - **Top Languages:** {{languages}}
-
-_Last auto-updated on **{{updated_date}}**._
-
----
-
-### 🔎 About
-- This resume is generated automatically from this repository and GitHub activity.
-- It includes all top-level project folders and a short summary extracted from each project's README.
+- _Last updated on **{{updated_date}}**_
 
 ---
+
+## 🧩 Projects (Auto-Generated From All Public Repositories)
 
 {{projects}}
 
 ---
 
-### 📌 Notes & Next steps
-- If a project's README is long, the script uses the **first paragraph** as the summary.
-- Want longer summaries or full README extracts? I can update the script to include more content or to fetch remote README files via the GitHub API.
-- Want charts, badges, or a PDF export? I can add those next.
-
+## 📌 Notes
+- Project summaries come from each repository’s README (first paragraph)
+- Sorted automatically by most stars
+- Updates weekly through GitHub Actions
