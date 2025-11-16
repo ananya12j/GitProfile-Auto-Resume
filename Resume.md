@@ -5,7 +5,7 @@
 ## 📊 GitHub Summary
 - **Public Repositories:** 9
 - **Followers:** 2
-- **Following:** 0
+- **Following:** 1
 - **Total Stars:** 0
 - **Top Languages:** Jupyter Notebook, Python, HTML
 - _Last updated on **16 Nov 2025**_
