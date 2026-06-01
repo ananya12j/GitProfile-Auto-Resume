@@ -3,12 +3,12 @@
 ---
 
 ## 📊 GitHub Summary
-- **Public Repositories:** 4
+- **Public Repositories:** 6
 - **Followers:** 2
 - **Following:** 1
 - **Total Stars:** 0
-- **Top Languages:** Python, Jupyter Notebook, HTML
-- _Last updated on **25 May 2026**_
+- **Top Languages:** Jupyter Notebook, Python, HTML
+- _Last updated on **01 Jun 2026**_
 
 ---
 
@@ -16,6 +16,8 @@
 
 ## 🧩 Projects (Auto-Generated)
 
+- **[Spatial_Risk_Intelligence_platform](https://github.com/ananya12j/Spatial_Risk_Intelligence_platform)** ⭐0 — An end-to-end machine learning and geospatial analytics platform for flood risk assessment, combining ensemble learning, real-time environmental inputs, GIS visualization, and disaster-response intelligence.
+- **[DeepVision-Gesture-Control-Framework](https://github.com/ananya12j/DeepVision-Gesture-Control-Framework)** ⭐0 — # DeepVision Gesture Control Framework
 - **[GitProfile-Auto-Resume](https://github.com/ananya12j/GitProfile-Auto-Resume)** ⭐0 — # GitHub Auto-Generated Resume 📝⚙️
 - **[Confusion-Detection-Study-Assistant](https://github.com/ananya12j/Confusion-Detection-Study-Assistant)** ⭐0 — #  Confusion Detection Study Assistant This project combines OCR, Machine Learning, Deep Learning, and AI-based NLP to create an interactive, real-time study assistant. It not only detects confusion dynamically but also provides AI-generated explanations, improving user engagement and making self-le...
 - **[InsurAssist](https://github.com/ananya12j/InsurAssist)** ⭐0 — AI-Powered Insurance Policy Q&A Assistant
