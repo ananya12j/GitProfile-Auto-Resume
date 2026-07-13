@@ -8,7 +8,7 @@
 - **Following:** 1
 - **Total Stars:** 0
 - **Top Languages:** Python, Jupyter Notebook, HTML
-- _Last updated on **06 Jul 2026**_
+- _Last updated on **13 Jul 2026**_
 
 ---
 
@@ -16,8 +16,8 @@
 
 ## 🧩 Projects (Auto-Generated)
 
-- **[QuantMind-AI](https://github.com/ananya12j/QuantMind-AI)** ⭐0 — A production-style RAG application that can answer questions over arbitrary PDF documents using LangChain, Transformer embeddings, and Qdrant
 - **[GitProfile-Auto-Resume](https://github.com/ananya12j/GitProfile-Auto-Resume)** ⭐0 — # GitHub Auto-Generated Resume 📝⚙️
+- **[QuantMind-AI](https://github.com/ananya12j/QuantMind-AI)** ⭐0 — A production-style RAG application that can answer questions over arbitrary PDF documents using LangChain, Transformer embeddings, and Qdrant
 - **[InsurAssist](https://github.com/ananya12j/InsurAssist)** ⭐0 — AI-Powered Insurance Policy Q&A Assistant
 - **[Neuro-Symbolic-Emotion-Modelling-](https://github.com/ananya12j/Neuro-Symbolic-Emotion-Modelling-)** ⭐0 — # Neuro-Symbolic Multimodal Emotion Recognition for AI Burnout Mitigation
 - **[Spatial_Risk_Intelligence_platform](https://github.com/ananya12j/Spatial_Risk_Intelligence_platform)** ⭐0 — An end-to-end machine learning and geospatial analytics platform for flood risk assessment, combining ensemble learning, real-time environmental inputs, GIS visualization, and disaster-response intelligence.
