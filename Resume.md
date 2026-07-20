@@ -3,12 +3,12 @@
 ---
 
 ## 📊 GitHub Summary
-- **Public Repositories:** 8
+- **Public Repositories:** 9
 - **Followers:** 2
 - **Following:** 1
 - **Total Stars:** 0
 - **Top Languages:** Python, Jupyter Notebook, HTML
-- _Last updated on **13 Jul 2026**_
+- _Last updated on **20 Jul 2026**_
 
 ---
 
@@ -16,6 +16,7 @@
 
 ## 🧩 Projects (Auto-Generated)
 
+- **[Smart-canteen-Project](https://github.com/ananya12j/Smart-canteen-Project)** ⭐0 — # riri_smart_canteen_booking
 - **[GitProfile-Auto-Resume](https://github.com/ananya12j/GitProfile-Auto-Resume)** ⭐0 — # GitHub Auto-Generated Resume 📝⚙️
 - **[QuantMind-AI](https://github.com/ananya12j/QuantMind-AI)** ⭐0 — A production-style RAG application that can answer questions over arbitrary PDF documents using LangChain, Transformer embeddings, and Qdrant
 - **[InsurAssist](https://github.com/ananya12j/InsurAssist)** ⭐0 — AI-Powered Insurance Policy Q&A Assistant
